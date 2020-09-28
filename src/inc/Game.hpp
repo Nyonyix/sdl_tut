@@ -12,7 +12,6 @@ private:
     int count = 0;
     bool is_running;
     SDL_Window *window;
-    SDL_Renderer *renderer;
     
 public:
     Game();
@@ -24,6 +23,8 @@ public:
     void update();
     void render();
     void clean();
+
+    static SDL_Renderer *renderer;
 
     bool running() {return is_running;}
 
