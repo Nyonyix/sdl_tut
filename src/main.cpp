@@ -1,6 +1,11 @@
+#define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "Game.hpp"
+
+#pragma comment (lib, "C:\\dev-libs\\SDL2_image-2.0.5\\lib\\x86\\SDL2_image.lib")
+#pragma comment (lib, "C:\\dev-libs\\SDL2-2.0.12\\lib\\x86\\SDL2main.lib")
+#pragma comment (lib, "C:\\dev-libs\\SDL2-2.0.12\\lib\\x86\\SDL2.lib")
 
 Game *game = nullptr;
 
