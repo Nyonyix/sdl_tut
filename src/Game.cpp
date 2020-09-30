@@ -5,12 +5,14 @@
 #include "Components.hpp"
 #include "Vector2D.hpp"
 #include <SDL2/SDL_image.h>
+#include "Collision.hpp"
 
 Map* map;
 Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 auto& Player(manager.addEntity());
+auto& Wall(manager.addEntity());
 
 Game::Game()
 {
@@ -51,6 +53,11 @@ void Game::init(std::string title, int xpos, int ypox, int width, int height, bo
     Player.addComponent<TransformComponent>();
     Player.addComponent<SpriteComponent>("res/sdl_player.png");
     Player.addComponent<KeyboardController>();
+    Player.addComponent<ColliderComponent>("player");
+
+    Wall.addComponent<TransformComponent>(0, 250, 64, 1000, 1);
+    Wall.addComponent<SpriteComponent>("res/dirt.png");
+    Wall.addComponent<ColliderComponent>("wall");
     
 }
 
@@ -70,6 +77,15 @@ void Game::eventHandler()
 
 void Game::update()
 {
+    if (Collision::AABB(Player.getComponent<ColliderComponent>().collider, Wall.getComponent<ColliderComponent>().collider))
+    {
+        Player.getComponent<TransformComponent>().velocity.y = 0;
+    }
+    else
+    {
+        Player.getComponent<TransformComponent>().velocity.y = 1;
+    }
+    
     manager.refresh();
     manager.update();
 }

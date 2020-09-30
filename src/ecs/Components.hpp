@@ -5,5 +5,6 @@
 #include "SpriteComp.hpp"
 #include "TransformComp.hpp"
 #include "KeyboardController.hpp"
+#include "ColliderComp.hpp"
 
 #endif /* COMPONENTS */

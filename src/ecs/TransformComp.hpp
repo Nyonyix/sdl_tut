@@ -12,6 +12,9 @@ public:
     Vector2D velocity;
 
     int speed = 3;
+    int hight = 64;
+    int width = 64;
+    int scale = 1;
 
     TransformComponent() 
     {
@@ -23,6 +26,15 @@ public:
     {
         position.x = x;
         position.y = y;
+    }
+
+    TransformComponent(double x, double y, int h, int w, int in_scale) 
+    {
+        position.x = x;
+        position.y = y;
+        hight = h;
+        width = w;
+        scale = in_scale;
     }
 
     void init() override
