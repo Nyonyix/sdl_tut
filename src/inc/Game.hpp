@@ -25,6 +25,7 @@ public:
     void clean();
 
     static SDL_Renderer *renderer;
+    static SDL_Event event;
 
     bool running() {return is_running;}
 

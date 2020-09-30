@@ -1,14 +1,16 @@
 #include "Game.hpp"
 #include "TextureManager.hpp"
-#include "GameObject.hpp"
 #include "Map.hpp"
+#include "ECS.hpp"
+#include "Components.hpp"
+#include "Vector2D.hpp"
 #include <SDL2/SDL_image.h>
 
-GameObject* player;
-GameObject* enemy;
 Map* map;
-
+Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
+auto& Player(manager.addEntity());
 
 Game::Game()
 {
@@ -44,14 +46,16 @@ void Game::init(std::string title, int xpos, int ypox, int width, int height, bo
 
         is_running = true;
     }
-    player = new GameObject("res/sdl_player.png", 0, 0);
-    enemy = new GameObject("res/sdl_enemy.png", 200, 200);
     map = new Map();
+
+    Player.addComponent<TransformComponent>();
+    Player.addComponent<SpriteComponent>("res/sdl_player.png");
+    Player.addComponent<KeyboardController>();
+    
 }
 
 void Game::eventHandler()
 {
-    SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type)
     {
@@ -66,20 +70,15 @@ void Game::eventHandler()
 
 void Game::update()
 {
-    count++;
-
-    player -> update();
-    enemy -> update();
-
-    //std::cout << count << std::endl;
+    manager.refresh();
+    manager.update();
 }
 
 void Game::render()
 {
     SDL_RenderClear(renderer);
     map -> drawMap();
-    player -> render();
-    enemy -> render();
+    manager.draw();
     SDL_RenderPresent(renderer);
 }
 
