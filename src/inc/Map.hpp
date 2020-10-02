@@ -1,25 +1,19 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include "Game.hpp"
+#include "ECS.hpp"
+#include "Components.hpp"
 
 class Map
 {
 private:
 
-    SDL_Rect src_rect, dest_rect;
-    SDL_Texture* dirt;
-    SDL_Texture* grass;
-    SDL_Texture* water;
-
-    int map[20][25];
-
 public:
     Map();
     ~Map();
 
-    void loadMap(int arr[20][25]);
-    void drawMap();
+    static void addTile(Manager& man, int id, int x, int y);
+    void loadMap(Manager& man, std::string path, int size_x, int size_y);
 };
 
 #endif

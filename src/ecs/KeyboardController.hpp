@@ -5,10 +5,10 @@
 #include "ECS.hpp"
 #include "Components.hpp"
 
+class TransformComponent;
+
 class KeyboardController : public Component
 {
-private:
-    
 public:
 
     TransformComponent *transform;
@@ -41,7 +41,8 @@ public:
                 break;
 
             case SDLK_ESCAPE:
-            SDL_Quit();
+                SDL_Quit();
+                break;
 
             default:
                 break;

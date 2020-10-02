@@ -11,8 +11,15 @@ Map* map;
 Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
+
 auto& Player(manager.addEntity());
 auto& Wall(manager.addEntity());
+
+auto& tile_0(manager.addEntity());
+auto& tile_1(manager.addEntity());
+auto& tile_2(manager.addEntity());
+
+std::vector<ColliderComponent*> Game::colliders;
 
 Game::Game()
 {
@@ -48,7 +55,13 @@ void Game::init(std::string title, int xpos, int ypox, int width, int height, bo
 
         is_running = true;
     }
-    map = new Map();
+    //map = new Map();
+
+    tile_0.addComponent<TileComponent>(0, 200, 64, 64, 2);
+    tile_0.addComponent<ColliderComponent>("grass");
+    tile_1.addComponent<TileComponent>(0, 400, 64, 64, 1);
+    tile_1.addComponent<ColliderComponent>("dirt");
+    tile_2.addComponent<TileComponent>(500, 100, 64, 64, 0);
 
     Player.addComponent<TransformComponent>();
     Player.addComponent<SpriteComponent>("res/sdl_player.png");
@@ -77,15 +90,13 @@ void Game::eventHandler()
 
 void Game::update()
 {
-    if (Collision::AABB(Player.getComponent<ColliderComponent>().collider, Wall.getComponent<ColliderComponent>().collider))
+    for (auto cc : colliders)
     {
-        Player.getComponent<TransformComponent>().velocity.y = 0;
+        if (cc->tag != "player")
+        {
+            Collision::AABB(Player.getComponent<ColliderComponent>(), *cc);
+        }
     }
-    else
-    {
-        Player.getComponent<TransformComponent>().velocity.y = 1;
-    }
-    
     manager.refresh();
     manager.update();
 }
@@ -93,7 +104,7 @@ void Game::update()
 void Game::render()
 {
     SDL_RenderClear(renderer);
-    map -> drawMap();
+    //map -> drawMap();
     manager.draw();
     SDL_RenderPresent(renderer);
 }

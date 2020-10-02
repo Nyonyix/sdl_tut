@@ -3,8 +3,9 @@
 
 #include "Components.hpp"
 #include "TextureManager.hpp"
-#include "TransformComp.hpp"
 #include <SDL2/SDL.h>
+
+class TransformComponent;
 
 class SpriteComponent : public Component
 {

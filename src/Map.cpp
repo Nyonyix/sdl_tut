@@ -1,94 +1,36 @@
 #include "Map.hpp"
 #include "TextureManager.hpp"
-
-int lvl_1[20][25] = {
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-};
+#include <fstream>
 
 Map::Map()
 {
-    dirt = TextureManager::loadTexture("res/dirt.png");
-    grass = TextureManager::loadTexture("res/grass.png");
-    water = TextureManager::loadTexture("res/water.png");
-
-    loadMap(lvl_1);
-
-    src_rect.x = src_rect.y = 0;
-    src_rect.w = dest_rect.w = 64;
-    src_rect.h = dest_rect.h = 64;
-
-    dest_rect.x = dest_rect.y = 0;
 }
 
 Map::~Map()
 {
-    SDL_DestroyTexture(water);
-    SDL_DestroyTexture(grass);
-    SDL_DestroyTexture(dirt);
 }
 
-void Map::loadMap(int arr[20][25])
+void Map::addTile(Manager& man, int id, int x, int y)
 {
-    for (int row = 0; row < 20; row++)
-    {
-        for (int column = 0; column < 25; column++)
-        {
-            map[row][column] = arr[row][column];
-        }
-    }
+    auto& tile(man.addEntity());
+    tile.addComponent<TileComponent>(x, y, 64, 64, id);
 }
 
-void Map::drawMap()
+void Map::loadMap(Manager& man, std::string path, int size_x, int size_y)
 {
-    int type = 0;
+    char tile;
+    std::fstream map_file;
+    map_file.open(path);
 
-    for (int row = 0; row < 20; row++)
+    for (int y = 0; y < size_y; y++)
     {
-        for (int column = 0; column < 25; column++)
+        for (int x = 0; x < size_x; x++)
         {
-            type = map[row][column];
-
-            dest_rect.x = column * 64;
-            dest_rect.y = row * 64;
-            
-            switch (type)
-            {
-            case 0:
-                TextureManager::draw(water, src_rect, dest_rect);
-                break;
-
-            case 1:
-                TextureManager::draw(grass, src_rect, dest_rect);
-                break;
-            
-            case 2:
-                TextureManager::draw(dirt, src_rect, dest_rect);
-                break;
-
-            default:
-                break;
-            }
+            map_file.get(tile);
+            addTile(man, atoi(&tile), x * 64, y * 64);
+            map_file.ignore();
         }
-        
     }
-    
+
+    map_file.close();
 }

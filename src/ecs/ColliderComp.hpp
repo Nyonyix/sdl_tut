@@ -3,13 +3,11 @@
 
 #include <string>
 #include <SDL2/SDL.h>
-#include "ECS.hpp"
 #include "TransformComp.hpp"
+#include "Game.hpp"
 
 class ColliderComponent : public Component
 {
-private:
-
 public:
         
     SDL_Rect collider;
@@ -30,6 +28,8 @@ public:
         }
 
         transform = &entity -> getComponent<TransformComponent>();
+
+        Game::colliders.push_back(this);
     }
 
     void update() override

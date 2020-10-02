@@ -1,7 +1,7 @@
 #ifndef TRANSFORMCOMP
 #define TRANSFORMCOMP
 
-#include "Components.hpp"
+#include "ECS.hpp"
 #include "Vector2D.hpp"
 
 class TransformComponent : public Component
