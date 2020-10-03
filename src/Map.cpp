@@ -1,5 +1,6 @@
 #include "Map.hpp"
 #include "TextureManager.hpp"
+#include "ECS.hpp"
 #include <fstream>
 
 Map::Map()
@@ -14,6 +15,7 @@ void Map::addTile(Manager& man, int id, int x, int y)
 {
     auto& tile(man.addEntity());
     tile.addComponent<TileComponent>(x, y, 64, 64, id);
+    tile.addGroup(ECS::group_map);
 }
 
 void Map::loadMap(Manager& man, std::string path, int size_x, int size_y)

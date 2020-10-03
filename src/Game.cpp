@@ -15,10 +15,6 @@ SDL_Event Game::event;
 auto& Player(manager.addEntity());
 auto& Wall(manager.addEntity());
 
-auto& tile_0(manager.addEntity());
-auto& tile_1(manager.addEntity());
-auto& tile_2(manager.addEntity());
-
 std::vector<ColliderComponent*> Game::colliders;
 
 Game::Game()
@@ -55,22 +51,20 @@ void Game::init(std::string title, int xpos, int ypox, int width, int height, bo
 
         is_running = true;
     }
-    //map = new Map();
+    map = new Map();
 
-    tile_0.addComponent<TileComponent>(0, 200, 64, 64, 2);
-    tile_0.addComponent<ColliderComponent>("grass");
-    tile_1.addComponent<TileComponent>(0, 400, 64, 64, 1);
-    tile_1.addComponent<ColliderComponent>("dirt");
-    tile_2.addComponent<TileComponent>(500, 100, 64, 64, 0);
+    Map::loadMap(manager, "res/map_16x16.map", 16, 16);
 
-    Player.addComponent<TransformComponent>();
-    Player.addComponent<SpriteComponent>("res/sdl_player.png");
+    Player.addComponent<TransformComponent>(0, 0, 64, 64, 4);
+    Player.addComponent<SpriteComponent>("res/sdl_player_anim.png", true);
     Player.addComponent<KeyboardController>();
     Player.addComponent<ColliderComponent>("player");
+    Player.addGroup(ECS::group_players);
 
     Wall.addComponent<TransformComponent>(0, 250, 64, 1000, 1);
     Wall.addComponent<SpriteComponent>("res/dirt.png");
     Wall.addComponent<ColliderComponent>("wall");
+
     
 }
 
@@ -101,11 +95,28 @@ void Game::update()
     manager.update();
 }
 
+auto& tiles(manager.getGroup(ECS::group_map));
+auto& players(manager.getGroup(ECS::group_players));
+auto& enemies(manager.getGroup(ECS::group_enemies));
+
 void Game::render()
 {
     SDL_RenderClear(renderer);
-    //map -> drawMap();
-    manager.draw();
+
+    for (auto& t : tiles)
+    {
+        t -> draw();
+    }
+
+    for (auto& p : players)
+    {
+        p -> draw();
+    }
+
+    for (auto& e : enemies)
+    {
+        e -> draw();
+    }
     SDL_RenderPresent(renderer);
 }
 

@@ -7,6 +7,7 @@ def loadImage(img_path: str, json_path: str) -> list:
     tiles_def = {}
     row = []
     image = []
+    size = []
 
     with open(img_path, 'r') as f:
         raw = f.readlines()
@@ -52,6 +53,17 @@ def writeImage(path: str, image: list) -> None:
     
     new_line = ""
 
+    if os.path.exists(path):
+        yes = ["y", "Y", "yes", "YES"]
+        no = ["n", "N", "no", "NO"]
+        usr_input  = "y"
+        usr_input = input("Output file already exists, Overwrite existing File?\n")
+
+        if usr_input in yes:
+            os.remove(path)
+        elif usr_input not in no:
+            exit("Unrecognised response")
+
     with open(path, 'a') as f:
         for line in image:
             for char in line:
@@ -62,4 +74,9 @@ def writeImage(path: str, image: list) -> None:
             f.write(new_line)
             new_line = ""
 
-writeImage(os.sys.argv[3], loadImage(os.sys.argv[1], os.sys.argv[2]))
+if __name__ == "__main__":
+    if len(os.sys.argv) < 4:
+        exit("Error: Unrecognised or missing arguments")
+
+    writeImage(os.sys.argv[3], loadImage(os.sys.argv[1], os.sys.argv[2]))
+    os.remove(os.sys.argv[1])
