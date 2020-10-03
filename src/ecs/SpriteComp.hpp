@@ -31,17 +31,13 @@ public:
         setTexture(path);
     }
 
-    SpriteComponent(std::string path, bool is_animated)
+    SpriteComponent(std::string path, Animation anim)
     {
-        animated = is_animated;
+        animated = true;
 
-        Animation idle = Animation(0, 4, 200);
-        Animation walk = Animation(1, 4, 300);
+        animations.emplace(anim.id_str, anim);
 
-        animations.emplace("idle", idle);
-        animations.emplace("walk", walk);
-
-        play("walk");
+        play(anim.id_str);
 
         setTexture(path);
     }

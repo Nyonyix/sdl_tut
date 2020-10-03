@@ -6,6 +6,7 @@
 #include "Vector2D.hpp"
 #include <SDL2/SDL_image.h>
 #include "Collision.hpp"
+#include "Animation.hpp"
 
 Map* map;
 Manager manager;
@@ -55,8 +56,11 @@ void Game::init(std::string title, int xpos, int ypox, int width, int height, bo
 
     Map::loadMap(manager, "res/map_16x16.map", 16, 16);
 
-    Player.addComponent<TransformComponent>(0, 0, 64, 64, 4);
-    Player.addComponent<SpriteComponent>("res/sdl_player_anim.png", true);
+    Animation walk = Animation("walk", 1, 5, 200);
+    Animation idle = Animation("idle", 0, 4, 200);
+
+    Player.addComponent<TransformComponent>();
+    Player.addComponent<SpriteComponent>("res/sdl_player_anim.png", idle);
     Player.addComponent<KeyboardController>();
     Player.addComponent<ColliderComponent>("player");
     Player.addGroup(ECS::group_players);
