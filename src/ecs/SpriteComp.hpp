@@ -6,6 +6,9 @@
 #include <SDL2/SDL.h>
 #include "Animation.hpp"
 #include <map>
+#include <random>
+
+class TileComponent;
 
 class SpriteComponent : public Component
 {
@@ -83,6 +86,32 @@ public:
 
     void draw() override
     {
+
+        /* if (entity -> hasComponent<TileComponent>())
+        {
+
+            std::default_random_engine gen;
+            std::uniform_int_distribution<int> dist(0, 1);
+
+            int rand_int = dist(gen);
+
+            switch (rand_int)
+            {
+            case 0:
+                sprite_flip = SDL_FLIP_HORIZONTAL;
+                break;
+
+            case 1:
+                sprite_flip = SDL_FLIP_VERTICAL;
+                break;
+            
+            default:
+                break;
+            }
+
+
+        } */
+
         TextureManager::draw(texture, src_rect, dest_rect, sprite_flip);
     }
 
