@@ -14,12 +14,17 @@ public:
     int speed = 3;
     int hight = 64;
     int width = 64;
-    int scale = 1;
+    double scale = 1;
 
     TransformComponent() 
     {
         position.x = 0;
         position.y = 0;
+    }
+
+    TransformComponent(int in_scale)
+    {
+        scale = in_scale;
     }
 
     TransformComponent(double x, double y) 
@@ -28,7 +33,7 @@ public:
         position.y = y;
     }
 
-    TransformComponent(double x, double y, int h, int w, int in_scale) 
+    TransformComponent(double x, double y, int h, int w, double in_scale) 
     {
         position.x = x;
         position.y = y;

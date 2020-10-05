@@ -10,7 +10,7 @@ private:
 public:
 
     static SDL_Texture* loadTexture(std::string filename);
-    static void draw(SDL_Texture* tex, SDL_Rect src_rect, SDL_Rect dest_rect);
+    static void draw(SDL_Texture* tex, SDL_Rect src_rect, SDL_Rect dest_rect, SDL_RendererFlip flip);
 };
 
 #endif

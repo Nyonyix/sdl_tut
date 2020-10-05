@@ -21,8 +21,9 @@ private:
 public:
 
     int anim_index = 0;
-
     std::map<std::string, Animation> animations;
+
+    SDL_RendererFlip sprite_flip = SDL_FLIP_NONE;
 
 
     SpriteComponent() = default;
@@ -31,13 +32,14 @@ public:
         setTexture(path);
     }
 
-    SpriteComponent(std::string path, Animation anim)
+    SpriteComponent(std::string path, std::vector<Animation> anim_list)
     {
         animated = true;
 
-        animations.emplace(anim.id_str, anim);
-
-        play(anim.id_str);
+        for (auto m : anim_list)
+        {
+            animations.emplace(m.id_str, m);
+        }
 
         setTexture(path);
     }
@@ -75,13 +77,13 @@ public:
 
         dest_rect.x = (int)transform -> position.x;
         dest_rect.y = (int)transform -> position.y;
-        dest_rect.w = transform -> width * transform -> scale;
-        dest_rect.h = transform -> hight * transform -> scale;
+        dest_rect.w = int(transform -> width * transform -> scale);
+        dest_rect.h = int(transform -> hight * transform -> scale); 
     }
 
     void draw() override
     {
-        TextureManager::draw(texture, src_rect, dest_rect);
+        TextureManager::draw(texture, src_rect, dest_rect, sprite_flip);
     }
 
     void play(std::string anim_name)
