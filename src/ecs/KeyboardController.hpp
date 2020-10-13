@@ -47,10 +47,6 @@ public:
                 sprite -> play("walk");
                 break;
 
-            case SDLK_ESCAPE:
-                SDL_Quit();
-                break;
-
             default:
                 break;
             }
@@ -80,6 +76,9 @@ public:
                     transform -> velocity.y = 0;
                     sprite -> play("idle");
                     break;
+
+                case SDLK_ESCAPE:
+                    Game::is_running = false;
 
                 default:
                     break;

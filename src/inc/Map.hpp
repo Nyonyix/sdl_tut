@@ -11,8 +11,8 @@ public:
     Map();
     ~Map();
 
-    static void addTile(Manager& man, int id, int x, int y, int tile_size_width, int tile_size_height, double tile_scale);
-    static void loadMap(Manager& man, std::string path, int map_size_x, int map_size_y, int tile_size_width, int tile_size_height, double tile_scale);
+    static void addTile(Manager& man, int src_x, int src_y, int x, int y, int tile_size_width, int tile_size_height, int draw_width, int draw_height, std::string path);
+    static void loadMap(Manager& man, std::string path, std::string texture_path, int map_size_x, int map_size_y, int tile_size_width, int tile_size_height, double tile_scale);
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "ECS.hpp"
 #include "Vector2D.hpp"
+#include <SDL2/SDL.h>
 
 class TransformComponent : public Component
 {
@@ -22,8 +23,13 @@ public:
         position.y = 0;
     }
 
-    TransformComponent(int in_scale)
+    TransformComponent(SDL_Window* win, int in_scale)
     {
+        int win_width = SDL_GetWindowSurface(win) -> w;
+        int win_height = SDL_GetWindowSurface(win) -> h;
+
+        position.x = int(win_width / 2);
+        position.y = int(win_height / 2);
         scale = in_scale;
     }
 
@@ -50,8 +56,7 @@ public:
 
     void update() override
     {
-        position.x += velocity.x * speed;
-        position.y += velocity.y * speed;
+
     }
 };
 

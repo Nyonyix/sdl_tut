@@ -19,6 +19,12 @@ auto& Wall(manager.addEntity());
 
 std::vector<ColliderComponent*> Game::colliders;
 
+bool Game::is_running = false;
+
+auto& tiles(manager.getGroup(ECS::group_map));
+auto& players(manager.getGroup(ECS::group_players));
+auto& enemies(manager.getGroup(ECS::group_enemies));
+
 Game::Game()
 {
 }
@@ -55,7 +61,7 @@ void Game::init(std::string title, int xpos, int ypox, int width, int height, bo
     }
     map = new Map();
 
-    Map::loadMap(manager, "res/map.csv", 16, 16, 64, 64, 2);
+    Map::loadMap(manager, "res/map.csv", "res/terrain_texture_map.png", 32, 32 , 64, 64, 0.5);
 
     Animation walk = Animation("walk", 1, 5, 200);
     Animation idle = Animation("idle", 0, 4, 200);
@@ -64,7 +70,7 @@ void Game::init(std::string title, int xpos, int ypox, int width, int height, bo
     anim_list.push_back(walk);
     anim_list.push_back(idle);
 
-    Player.addComponent<TransformComponent>();
+    Player.addComponent<TransformComponent>(window, 1);
     Player.addComponent<SpriteComponent>("res/sdl_player_anim.png", anim_list);
     Player.getComponent<SpriteComponent>().play("idle");
     Player.addComponent<KeyboardController>();
@@ -94,20 +100,18 @@ void Game::eventHandler()
 
 void Game::update()
 {
-    for (auto cc : colliders)
-    {
-        if (cc->tag != "player")
-        {
-            Collision::AABB(Player.getComponent<ColliderComponent>(), *cc);
-        }
-    }
     manager.refresh();
     manager.update();
-}
 
-auto& tiles(manager.getGroup(ECS::group_map));
-auto& players(manager.getGroup(ECS::group_players));
-auto& enemies(manager.getGroup(ECS::group_enemies));
+    Vector2D player_velocity = Player.getComponent<TransformComponent>().velocity;
+    int player_speed = Player.getComponent<TransformComponent>().speed;
+
+    for (auto t : tiles)
+    {
+        t -> getComponent<TileComponent>().dest_rect.x += -(player_velocity.x * player_speed);
+        t -> getComponent<TileComponent>().dest_rect.y += -(player_velocity.y * player_speed);
+    }
+}
 
 void Game::render()
 {
