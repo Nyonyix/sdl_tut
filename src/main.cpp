@@ -9,7 +9,7 @@
 
 Game *game = nullptr;
 
-int main(int argc, char const *argv[])
+int main(int argc, char* const argv[])
 {
 
     const int fps = 60;
@@ -18,8 +18,31 @@ int main(int argc, char const *argv[])
     Uint32 frame_start;
     int frame_time;
 
+    SDL_DisplayMode DM;
+    SDL_GetCurrentDisplayMode(0, &DM);
+    Uint32 win_flags = 0;
+    int win_width = 800;
+    int win_height = 640;
+
+    if (argc > 1)
+    {
+        if (argv[1] == std::string("-f") || argv[1] == std::string("-fullscreen"))
+        {
+            if (argc == 4)
+            {
+                win_flags = SDL_WINDOW_FULLSCREEN;
+                win_width = SDL_atoi(argv[2]);
+                win_height = SDL_atoi(argv[3]);
+            }
+            else
+            {
+                win_flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+            }
+        }
+    }
+
     game = new Game();
-    game->init("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
+    game->init("Test Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, win_width, win_height, win_flags);
 
     while (game->running())
     {

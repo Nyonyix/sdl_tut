@@ -33,31 +33,40 @@ Game::~Game()
 {
 }
 
-void Game::init(std::string title, int xpos, int ypox, int width, int height, bool fullscreen)
+void Game::init(std::string title, int xpos, int ypos, int width, int height, Uint32 flags)
 {
-    int flags = 0;
-    if(fullscreen)
-    {
-        flags = SDL_WINDOW_FULLSCREEN;
-    }
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
         std::cout << "Subsystem Initialised" << std::endl;
 
-        window = SDL_CreateWindow(title.c_str(), xpos, ypox, width, height, flags);
+        window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
         if(window)
         {
             std::cout << "Window Created" << std::endl;
+            is_running = true;
         }
+        else
+        {
+            std::cout << "Window Failed\n" << SDL_GetError() <<std::endl;
+            std::cout << "Window Info: \n" << "xpos: " << xpos << '\n' 
+            << "ypos: " << ypos << '\n' << "width: " << width << '\n'
+            << "height" << height << '\n' << "flags: " << flags << std::endl;
+            is_running = false;
+        }
+        
 
         renderer = SDL_CreateRenderer(window, -1, 0);
         if(renderer)
         {
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             std::cout << "Renderer Active" << std::endl;
+            is_running = true;
         }
-
-        is_running = true;
+        else
+        {
+            std::cout << "Renderer Failed\n" << SDL_GetError() << std::endl;
+            is_running = false;
+        }
     }
     map = new Map();
 

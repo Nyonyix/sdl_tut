@@ -25,8 +25,10 @@ public:
 
     TransformComponent(SDL_Window* win, int in_scale)
     {
-        int win_width = SDL_GetWindowSurface(win) -> w;
-        int win_height = SDL_GetWindowSurface(win) -> h;
+        SDL_DisplayMode DM;
+        SDL_GetCurrentDisplayMode(0, &DM);
+        int win_width = DM.w;
+        int win_height = DM.h;
 
         position.x = int(win_width / 2);
         position.y = int(win_height / 2);

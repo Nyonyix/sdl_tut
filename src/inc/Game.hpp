@@ -19,7 +19,7 @@ public:
     Game();
     ~Game();
 
-    void init(std::string title, int xpos, int ypox, int width, int height, bool fullscreen);
+    void init(std::string title, int xpos, int ypos, int width, int height, Uint32 flags);
 
     void eventHandler();
     void update();
