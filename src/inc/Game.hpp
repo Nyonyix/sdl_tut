@@ -32,8 +32,6 @@ public:
 
     static std::vector<ColliderComponent*> colliders;
 
-    bool running() {return is_running;}
-
 };
 
 #endif

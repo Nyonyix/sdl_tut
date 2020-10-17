@@ -124,11 +124,7 @@ void Game::update()
 }
 
 void Game::render()
-{
-
-    Sint16 poly_x[5] = {0, 200, 150, 200, 0};
-    Sint16 poly_y[5] = {0, 0, 150, 200, 200};
-
+{ 
     SDL_RenderClear(renderer);
 
     for (auto& t : tiles)
@@ -145,7 +141,6 @@ void Game::render()
     {
         e -> draw();
     }
-    filledPolygonColor(renderer, poly_x, poly_y, 5, 0xFF0000FF);
     SDL_RenderPresent(renderer);
 }
 
