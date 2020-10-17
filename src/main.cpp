@@ -4,9 +4,12 @@
 #include "Game.hpp"
 #include <chrono>
 
-#pragma comment (lib, "C:\\dev-libs\\SDL2_image-2.0.5\\lib\\x86\\SDL2_image.lib")
-#pragma comment (lib, "C:\\dev-libs\\SDL2-2.0.12\\lib\\x86\\SDL2main.lib")
-#pragma comment (lib, "C:\\dev-libs\\SDL2-2.0.12\\lib\\x86\\SDL2.lib")
+#pragma comment (lib, "C:\\dev-libs\\SDL2_image-2.0.5\\lib\\x64\\SDL2_image.lib")
+#pragma comment (lib, "C:\\dev-libs\\SDL2-2.0.12\\lib\\x64\\SDL2main.lib")
+#pragma comment (lib, "C:\\dev-libs\\SDL2-2.0.12\\lib\\x64\\SDL2.lib")
+#pragma comment (lib, "C:\\dev-libs\\x64\\Release\\SDL2_gfx.lib")
+
+using ulong = unsigned long int;
 
 Game *game = nullptr;
 
